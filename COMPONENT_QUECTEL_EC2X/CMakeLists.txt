@@ -11,6 +11,7 @@ target_include_directories(quectel-ec2x
 target_sources(quectel-ec2x
     PRIVATE
         QUECTEL_EC2X.cpp
+        QUECTEL_EC2X_CellularInformation.cpp
 )
 
 target_link_libraries(quectel-ec2x

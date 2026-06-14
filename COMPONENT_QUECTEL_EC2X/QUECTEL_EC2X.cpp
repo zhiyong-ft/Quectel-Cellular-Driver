@@ -16,6 +16,7 @@
  */
 
 #include "QUECTEL_EC2X.h"
+#include "QUECTEL_EC2X_CellularInformation.h"
 
 #include "PinNames.h"
 #include "AT_CellularNetwork.h"
@@ -63,6 +64,11 @@ QUECTEL_EC2X::QUECTEL_EC2X(FileHandle *fh, PinName pwr, bool active_high, PinNam
       _rst(rst, !_active_high)
 {
     set_cellular_properties(cellular_properties);
+}
+
+AT_CellularInformation *QUECTEL_EC2X::open_information_impl(ATHandler &at)
+{
+    return new QUECTEL_EC2X_CellularInformation(at, *this);
 }
 
 nsapi_error_t QUECTEL_EC2X::press_power_button(duration<uint32_t, std::milli> timeout)
