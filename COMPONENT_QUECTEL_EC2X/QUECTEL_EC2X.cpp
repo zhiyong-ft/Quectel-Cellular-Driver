@@ -22,6 +22,7 @@
 #include "AT_CellularNetwork.h"
 #include "rtos/ThisThread.h"
 #include "drivers/BufferedSerial.h"
+#include "CellularLog.h"
 
 using namespace std::chrono;
 using namespace mbed;
@@ -113,11 +114,13 @@ nsapi_error_t QUECTEL_EC2X::soft_power_on()
 
         if(_use_flow_control){
             if (_at.at_cmd_discard("+IFC", "=", "%d%d", 2, 2) != NSAPI_ERROR_OK) {
-                printf("Set flow control failed");
+                tr_error("Set flow control failed (AT+IFC)");
+                _at.unlock();
                 return NSAPI_ERROR_DEVICE_ERROR;
             }
             if (_at.at_cmd_discard("&W", "", "") != NSAPI_ERROR_OK) {
-                printf("Set flow control failed");
+                tr_error("Set flow control failed (AT&W)");
+                _at.unlock();
                 return NSAPI_ERROR_DEVICE_ERROR;
             }
         }
